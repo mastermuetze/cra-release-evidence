@@ -44,7 +44,7 @@ jobs:
 
       - name: Build the release evidence index
         id: evidence
-        uses: mastermuetze/cra-release-evidence@7287897b317bbfb214e60e290b37c15ff5fbf633
+        uses: mastermuetze/cra-release-evidence@0dd17d8ed483f3929363c2cd87936ac9c7928f8f
         with:
           release-tag: ${{ github.event.release.tag_name }}
           evidence-paths: |

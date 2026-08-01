@@ -41,7 +41,7 @@ This file separates completed source preparation from owner-controlled or legal 
 ## Repository controls
 
 - [x] Create the public Action-only repository `mastermuetze/cra-release-evidence`.
-- [ ] Set `main` as the default branch.
+- [x] Set `main` as the default branch.
 - [ ] Configure a ruleset requiring the three CI matrix checks.
 - [ ] Require pull-request review for `action.yml`, `action/**`, `.github/workflows/**`, and release documents.
 - [ ] Enable secret scanning and dependency alerts where available.
