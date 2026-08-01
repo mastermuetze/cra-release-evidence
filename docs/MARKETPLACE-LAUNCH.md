@@ -23,7 +23,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] CI includes a real `uses: ./` runtime smoke test.
 - [x] Foreign CI actions are pinned to reviewed 40-character SHAs.
 - [x] Repository tests check the action entrypoint, metadata, package version, schema, workflow pins, and forbidden site files.
-- [ ] First CI run is green in the final public repository.
+- [x] The current public `main` CI matrix is green in the final public repository.
 - [ ] Separate consumer-repository smoke test is green against the released full commit SHA.
 
 ## Owner and legal blockers
