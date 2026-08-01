@@ -44,7 +44,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Set `main` as the default branch.
 - [ ] Configure a ruleset requiring the three CI matrix checks.
 - [ ] Require pull-request review for `action.yml`, `action/**`, `.github/workflows/**`, and release documents.
-- [ ] Enable secret scanning and dependency alerts where available.
+- [x] Enable secret scanning, push protection, Dependabot alerts, and Dependabot security updates.
 - [x] Keep GitHub Issues disabled while operator/privacy and monitored support details remain unresolved.
 - [ ] After privacy/operator approval, rename `pilot-registration.yml.template` to `pilot-registration.yml`; optionally create the `pilot` label.
 - [ ] Enable Discussions only after a monitored support owner is assigned.
