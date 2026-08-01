@@ -10,15 +10,22 @@ An imported SBOM is always copied into the package under `sbom/`; otherwise the 
 
 GitHub and any scanner actions used in the surrounding workflow process data under their own terms and privacy notices. They are not operated by this project.
 
+## Publisher contact
+
+- Published name: **Warnowdigitalsolutions**
+- Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
+
+Do not send SBOMs, findings, credentials, source code, private repository details, customer information, or other confidential evidence to this address. These supplied contact details do not by themselves constitute a reviewed privacy notice or identify any additional legal-form or address details that may need to be published.
+
 ## Pilot registration
 
 The pilot issue form is optional and stored by GitHub as a public issue. A submitter's public GitHub account, profile, and issue metadata are visible to GitHub and issue readers. Do not submit source code, SBOM contents, vulnerability findings, credentials, confidential filenames, raw evidence, or additional personal data. Commercial commitments and private-repository verification must use a separately agreed private channel after the publisher has documented its operator and privacy information.
 
 ## Publication blocker
 
-**Status: `OPERATOR_DETAILS_REQUIRED`.** Before GitHub Issues, the pilot form, or any separate private/commercial intake is enabled, the responsible owner must replace this marker with concrete, reviewed information covering at least:
+**Status: `OPERATOR_DETAILS_REQUIRED`.** The published name and general contact above are confirmed. Before GitHub Issues, the pilot form, or any separate private/commercial intake is enabled, the responsible owner must replace this marker with concrete, reviewed information covering at least:
 
-- operator identity and a monitored contact channel;
+- confirmation of the exact responsible legal entity, legal form, and any address details to publish;
 - purposes and scope of the public pilot intake;
 - GitHub/public visibility and any separate systems used;
 - retention and deletion rules plus a request channel; and

@@ -1,8 +1,12 @@
 # Support policy
 
-Public support intake is disabled during the source-only prototype. Before GitHub Issues, Discussions, a release, or a Marketplace listing is enabled, the repository owner must replace this section with real, monitored support channels and response expectations.
+Publisher: **Warnowdigitalsolutions**
 
-Planned routing after those channels are explicitly enabled:
+Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
+
+Use the general contact for setup questions and synthetic, non-confidential defect descriptions. Public GitHub Issues and Discussions remain disabled during the source-only prototype. Before a release or Marketplace listing, the publisher must define response and maintenance expectations.
+
+Planned routing after public channels are explicitly enabled:
 
 - reproducible defects without sensitive data: GitHub bug-report issue form;
 - setup questions and public workflow examples: GitHub Discussions;
@@ -10,3 +14,4 @@ Planned routing after those channels are explicitly enabled:
 - legal interpretation, product classification, conformity assessment, CE marking, and regulatory reporting: outside project support.
 
 Do not post SBOMs, scanner findings, credentials, private repository details, or customer information in public support threads.
+Do not send that material to the general contact address either.

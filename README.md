@@ -116,6 +116,8 @@ The **Pilot registration** issue form is shipped as the disabled file `.github/I
 
 ## Security, support, and licensing
 
+- Publisher: **Warnowdigitalsolutions**
+- General contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 - Security policy: [SECURITY.md](SECURITY.md)
 - Support policy: [SUPPORT.md](SUPPORT.md)
 - Data handling: [PRIVACY.md](PRIVACY.md)
