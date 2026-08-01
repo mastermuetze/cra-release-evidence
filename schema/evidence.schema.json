@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CRA Release Evidence package",
+  "description": "Machine-readable release evidence. Status describes configured evidence completeness only and is never a legal compliance result.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "generator",
+    "status",
+    "statusMeaning",
+    "release",
+    "policy",
+    "sbom",
+    "evidence",
+    "changes",
+    "gaps",
+    "manualCheckpoints",
+    "legalBoundary"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "generator": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "cra-release-evidence" },
+        "version": { "const": "0.1.0" },
+        "actionRef": { "type": ["string", "null"] },
+        "actionRepository": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "status": { "enum": ["complete", "gaps-found"] },
+    "statusMeaning": { "type": "string" },
+    "release": {
+      "type": "object",
+      "required": ["repository", "tag", "commit", "event"],
+      "properties": {
+        "repository": { "type": "string" },
+        "tag": { "type": "string" },
+        "commit": { "type": ["string", "null"] },
+        "event": { "type": "string" },
+        "runId": { "type": ["string", "null"] },
+        "runAttempt": { "type": ["string", "null"] },
+        "workflow": { "type": ["string", "null"] },
+        "workflowRunUrl": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "required": ["requiredEvidence", "includeRawReports", "failOnGaps"],
+      "properties": {
+        "requiredEvidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "includeRawReports": { "type": "boolean" },
+        "failOnGaps": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "sbom": {
+      "type": "object",
+      "required": [
+        "mode",
+        "structureRecognized",
+        "schemaValidation",
+        "recognitionIssues",
+        "parseStatus",
+        "path",
+        "format",
+        "sha256",
+        "sourceCommitMatchesRelease",
+        "sourceCommitRelation",
+        "note"
+      ],
+      "properties": {
+        "mode": { "enum": ["imported", "generated-manifest-fallback"] },
+        "structureRecognized": { "type": "boolean" },
+        "schemaValidation": { "const": "not-performed" },
+        "recognitionIssues": { "type": "array", "items": { "type": "string" } },
+        "parseStatus": {
+          "enum": ["generated", "recognized-structure", "unrecognized-structure", "parse-error", "too-large"]
+        },
+        "path": { "type": "string" },
+        "format": { "type": "string" },
+        "components": { "type": ["integer", "null"], "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "sourceCommit": { "type": ["string", "null"] },
+        "sourceCommitMatchesRelease": { "type": ["boolean", "null"] },
+        "sourceCommitRelation": { "type": "string" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "sourcePath", "size", "sha256", "parseStatus"],
+        "properties": {
+          "category": { "type": "string" },
+          "sourcePath": { "type": "string" },
+          "size": { "type": "integer", "minimum": 0 },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "parseStatus": { "enum": ["parsed", "opaque", "unrecognized", "parse-error", "too-large"] },
+          "summary": { "type": ["object", "null"] },
+          "packagedPath": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "changes": { "type": "object" },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "message"],
+        "properties": {
+          "category": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "manualCheckpoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "status", "note"],
+        "properties": {
+          "title": { "type": "string" },
+          "status": { "const": "not evaluated" },
+          "note": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "legalBoundary": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "additionalProperties": true
+}

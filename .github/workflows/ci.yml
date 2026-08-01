@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Node 24 / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Run source and repository checks
+        run: npm run check
+
+      - name: Create two local releases for the action smoke test
+        id: release_fixture
+        shell: bash
+        run: |
+          git config user.name "CRA Evidence CI"
+          git config user.email "cra-evidence-ci@example.invalid"
+          previous_tag="ci-previous-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          release_tag="ci-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git tag "$previous_tag"
+          git commit --allow-empty -m "CI smoke release"
+          git tag "$release_tag"
+          release_sha=$(git rev-parse "$release_tag^{commit}")
+          echo "previous_tag=$previous_tag" >> "$GITHUB_OUTPUT"
+          echo "release_tag=$release_tag" >> "$GITHUB_OUTPUT"
+          echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Run the checked-out action through the GitHub Actions runtime
+        id: smoke
+        uses: ./
+        with:
+          release-tag: ${{ steps.release_fixture.outputs.release_tag }}
+          previous-tag: ${{ steps.release_fixture.outputs.previous_tag }}
+          sbom-path: tests/fixtures/bom.cdx.json
+          sbom-source-sha: ${{ steps.release_fixture.outputs.release_sha }}
+          evidence-paths: tests/fixtures/junit.xml
+          required-evidence: sbom,test-results,change-summary
+          output-directory: ci-evidence
+          fail-on-gaps: true
+
+      - name: Verify runtime outputs
+        env:
+          EVIDENCE_JSON: ${{ steps.smoke.outputs.json-path }}
+          EVIDENCE_STATUS: ${{ steps.smoke.outputs.status }}
+        run: node -e "const fs=require('node:fs'); const p=process.env.EVIDENCE_JSON; if(!p||!fs.existsSync(p)) throw new Error('missing evidence.json'); const d=JSON.parse(fs.readFileSync(p,'utf8')); if(d.status!=='complete'||process.env.EVIDENCE_STATUS!=='complete') throw new Error('unexpected smoke status');"

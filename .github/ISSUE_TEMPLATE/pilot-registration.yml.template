@@ -1,0 +1,120 @@
+name: Pilot registration / Pilot-Registrierung
+description: Register a voluntary real-release pilot without sharing private evidence.
+title: "[Pilot] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing CRA Release Evidence.
+
+        This issue is public. Your public GitHub account, profile, and issue metadata
+        are visible to GitHub and issue readers. Do **not** share source code, SBOM
+        contents, findings, raw reports, internal filenames, hashes of internal
+        files, credentials, customer information, or additional personal data.
+
+        The action sends no telemetry. This issue is an optional, user-initiated
+        registration stored by GitHub. It is not a legal or conformity assessment.
+
+  - type: dropdown
+    id: pilot_status
+    attributes:
+      label: Pilot status
+      description: Only a package from an actual product release can qualify for the activation gate.
+      options:
+        - Not run yet
+        - Run only for a test or demo tag
+        - Run for an actual product release and package generated
+    validations:
+      required: true
+
+  - type: dropdown
+    id: segment
+    attributes:
+      label: Product segment
+      options:
+        - Installable commercial software
+        - Commercial developer tool
+        - Device firmware
+        - Other product with digital elements
+        - Pure SaaS
+        - Not yet classified
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repository_visibility
+    attributes:
+      label: Repository visibility
+      options:
+        - Public
+        - Private
+        - No repository used yet
+    validations:
+      required: true
+
+  - type: input
+    id: action_version
+    attributes:
+      label: Action version
+      description: Action tag or commit SHA only; do not provide internal file digests.
+      placeholder: v0.1.0
+
+  - type: checkboxes
+    id: outputs
+    attributes:
+      label: Generated outputs
+      description: Confirm presence only; do not paste content.
+      options:
+        - label: EVIDENCE.md was generated
+        - label: evidence.json was generated
+        - label: changes.json was generated
+        - label: An SBOM was imported or a labelled manifest fallback was generated
+        - label: Missing configured evidence was made visible when applicable
+
+  - type: checkboxes
+    id: inputs
+    attributes:
+      label: Input categories used
+      options:
+        - label: CycloneDX JSON or SPDX JSON
+        - label: JUnit or comparable test output
+        - label: SARIF
+        - label: Trivy
+        - label: Snyk
+        - label: Another local report file
+        - label: No externally generated reports
+
+  - type: input
+    id: public_evidence
+    attributes:
+      label: Optional public verification URL
+      description: Only an already-public workflow run, release, or repository URL. Leave empty if disclosure could be sensitive.
+      placeholder: https://github.com/...
+
+  - type: textarea
+    id: feedback
+    attributes:
+      label: What was useful or unclear?
+      description: Describe setup and usability only; do not include findings, paths, or confidential product details.
+
+  - type: dropdown
+    id: follow_up
+    attributes:
+      label: May maintainers ask follow-up questions in this public issue?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: Any repository reported in this issue is not controlled by the CRA Release Evidence project team.
+          required: true
+        - label: I have not submitted confidential evidence or additional personal data beyond the public GitHub account, profile, and issue metadata described above.
+          required: true
+        - label: I understand that this tool does not make a legal or conformity assessment.
+          required: true

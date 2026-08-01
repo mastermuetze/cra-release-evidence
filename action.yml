@@ -1,0 +1,66 @@
+name: "CRA Release Evidence"
+description: "Build a version-specific evidence package from existing release, test, security, and SBOM files without making compliance claims."
+author: "CRA Release Evidence contributors"
+
+branding:
+  icon: "shield"
+  color: "blue"
+
+inputs:
+  release-tag:
+    description: "Existing local Git tag to document. Workspace HEAD must resolve to this tag. Defaults to the current GitHub ref name."
+    required: false
+  previous-tag:
+    description: "Previous release tag. When omitted, the nearest reachable ancestor tag is used; pass it explicitly for release-accurate selection."
+    required: false
+  sbom-path:
+    description: "Existing SPDX JSON or CycloneDX JSON SBOM inside the workspace. When omitted, a manifest-derived CycloneDX JSON inventory is generated."
+    required: false
+  sbom-source-sha:
+    description: "Declared full 40-character commit SHA from which the imported SBOM was generated. Equality is checked; this is not signed provenance."
+    required: false
+  evidence-paths:
+    description: "Newline- or comma-separated workspace globs for existing JUnit, SARIF, Trivy, Snyk, coverage, or other evidence files."
+    required: false
+    default: |
+      reports/**/*.sarif
+      reports/**/junit*.xml
+      reports/**/test-results*.xml
+      reports/**/trivy*.json
+      reports/**/snyk*.json
+      reports/**/coverage*.json
+      reports/**/coverage*.xml
+  required-evidence:
+    description: "Configured evidence categories. This is a completeness policy, not a legal conclusion."
+    required: false
+    default: "sbom,test-results,security-scan,change-summary"
+  output-directory:
+    description: "Workspace-relative directory for versioned evidence packages."
+    required: false
+    default: "cra-evidence"
+  include-raw-reports:
+    description: "Copy matched raw reports into the package. Disable for sensitive public release workflows."
+    required: false
+    default: "false"
+  fail-on-gaps:
+    description: "Fail after producing the package when configured evidence is missing."
+    required: false
+    default: "false"
+
+outputs:
+  package-dir:
+    description: "Absolute path to the versioned evidence package."
+  markdown-path:
+    description: "Absolute path to EVIDENCE.md."
+  json-path:
+    description: "Absolute path to evidence.json."
+  status:
+    description: "complete or gaps-found against the configured evidence list; never a CRA compliance result."
+  gap-count:
+    description: "Number of configured evidence gaps."
+  release-tag:
+    description: "Release tag represented by the package."
+
+runs:
+  using: "node24"
+  main: "action/index.mjs"

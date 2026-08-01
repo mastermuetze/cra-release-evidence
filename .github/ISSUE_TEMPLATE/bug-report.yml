@@ -1,0 +1,56 @@
+name: Bug report
+description: Report reproducible action behavior without disclosing sensitive evidence.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Your public GitHub account, profile, and issue
+        metadata are visible to GitHub and issue readers.
+
+        Do not attach private SBOMs, findings, raw reports, tokens, source code,
+        customer information, additional personal data, or internal repository
+        details. Reduce the problem to a synthetic fixture before posting it publicly.
+  - type: input
+    id: version
+    attributes:
+      label: Action version or full commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: runner
+    attributes:
+      label: Runner
+      options:
+        - ubuntu-latest
+        - windows-latest
+        - macos-latest
+        - self-hosted
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal synthetic reproduction
+      description: Use generated or public test data only.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: This report contains no credentials, private evidence, confidential product information, or additional personal data beyond the public GitHub account, profile, and issue metadata described above.
+          required: true
