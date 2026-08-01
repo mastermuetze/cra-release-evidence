@@ -19,7 +19,7 @@ jobs:
 
       - name: Build the release evidence index
         id: evidence
-        uses: mastermuetze/cra-release-evidence@v0.1.0
+        uses: mastermuetze/cra-release-evidence@7287897b317bbfb214e60e290b37c15ff5fbf633 # source-only prototype commit
         with:
           release-tag: ${{ github.event.release.tag_name }}
           # Pass previous-tag explicitly if release chronology differs from Git ancestry.

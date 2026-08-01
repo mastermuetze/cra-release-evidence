@@ -2,6 +2,8 @@
 
 > Evidence for a release, not a legal verdict.
 
+**Status:** This is a source-only prototype. No `v0.1.0` release or Marketplace listing exists yet, and the public pilot/support intake remains disabled pending human approval.
+
 CRA Release Evidence is a free GitHub Action that turns existing SBOMs, test results, security reports, and Git changes into a version-specific Markdown and JSON evidence index.
 
 It is **not** a general CRA scanner, legal advice, a conformity assessment, or a guarantee of compliance with the EU Cyber Resilience Act. Product scope, cybersecurity risk assessment, residual-risk acceptance, conformity assessment, the EU declaration of conformity, CE marking, and regulatory notifications remain human responsibilities.
@@ -42,7 +44,7 @@ jobs:
 
       - name: Build the release evidence index
         id: evidence
-        uses: mastermuetze/cra-release-evidence@v0.1.0
+        uses: mastermuetze/cra-release-evidence@7287897b317bbfb214e60e290b37c15ff5fbf633
         with:
           release-tag: ${{ github.event.release.tag_name }}
           evidence-paths: |
@@ -62,7 +64,7 @@ jobs:
           retention-days: 90
 ```
 
-The release tag is convenient for evaluation. For production, resolve `v0.1.0` to its reviewed 40-character commit SHA and pin that immutable SHA in the consuming workflow.
+The pinned 40-character SHA identifies the tested source-only prototype commit. Review it before use. After a separately approved `v0.1.0` release exists, resolve that release to its reviewed commit and continue pinning the immutable SHA in consuming workflows.
 
 ## Inputs
 
