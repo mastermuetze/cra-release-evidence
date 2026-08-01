@@ -820,6 +820,8 @@ async function main() {
   const requestedReleaseTag = input("release-tag", process.env.GITHUB_REF_NAME || "");
   const changes = await collectChanges(workspace, requestedReleaseTag, input("previous-tag"));
   const releaseTag = changes.releaseTag;
+  const sbomPath = input("sbom-path");
+  if (sbomPath) await workspaceFile(workspace, sbomPath, "sbom-path");
   const outputRoot = resolveInside(workspace, input("output-directory", "cra-evidence"), "output-directory");
   await assertNoSymlinkPath(workspace, outputRoot, "output-directory");
   await mkdir(outputRoot, { recursive: true });
@@ -833,8 +835,8 @@ async function main() {
   }
 
   const manifestFiles = await findMatchingFiles(workspace, MANIFEST_PATTERNS, [outputRoot]);
-  const sbom = input("sbom-path")
-    ? await importSbom(workspace, outDir, input("sbom-path"))
+  const sbom = sbomPath
+    ? await importSbom(workspace, outDir, sbomPath)
     : await generateSbom(workspace, outDir, manifestFiles);
   for (const warning of sbom.warnings ?? []) annotation("warning", `SBOM generation: ${warning}`);
   if (sbom.mode === "generated-manifest-fallback") {
