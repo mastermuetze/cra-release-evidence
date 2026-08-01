@@ -2,7 +2,7 @@
 
 This file is a publishing checklist, not an end-user licence agreement and not legal advice.
 
-Publisher details supplied for drafting: **Warnowdigitalsolutions**, [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch). Exact legal-entity, legal-form, address, and approved-terms details remain subject to human confirmation and review.
+Publisher details supplied for drafting: **Benjamin Warnow**, sole proprietorship; business name: **Warnowdigitalsolutions**; address: An der hohlen Gasse 19, 4058 Basel; contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch). Country, any additional public identifiers, and approved-terms details remain subject to human confirmation and review.
 
 GitHub's Marketplace Developer Agreement requires the publisher to provide end-user terms for the listed developer product. Before Marketplace publication, the responsible repository owner must obtain review appropriate to its organisation and replace this file with an approved `EULA.md` covering at least:
 

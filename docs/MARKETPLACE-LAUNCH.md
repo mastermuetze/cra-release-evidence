@@ -34,8 +34,8 @@ This file separates completed source preparation from owner-controlled or legal 
 - [ ] Enable 2FA for the publishing account.
 - [ ] Accept the GitHub Marketplace Developer Agreement as the authorized owner.
 - [ ] Replace `EULA-DRAFT.md` with legally approved `EULA.md`; confirm suitability for Marketplace Agreement section 2.4.
-- [x] Add the supplied publisher name `Warnowdigitalsolutions` and monitored general contact `hallo@warnowdigitalsolutions.ch`.
-- [ ] Confirm the exact responsible legal entity, legal form, address details, and any required public notices with an authorized reviewer.
+- [x] Record the supplied responsible publisher `Benjamin Warnow`, legal form `sole proprietorship`, business name `Warnowdigitalsolutions`, address `An der hohlen Gasse 19, 4058 Basel`, and monitored general contact `hallo@warnowdigitalsolutions.ch`.
+- [ ] Confirm the country designation, any additional register or tax identifiers, and any required public notices with an authorized reviewer.
 - [x] Enable Private Vulnerability Reporting and verify the repository-specific private reporting URL in `SECURITY.md`.
 - [ ] Before enabling GitHub Issues, pilot intake, or private/commercial intake, replace the publication-blocker marker in `PRIVACY.md` with reviewed operator identity, contact, purpose, visibility, retention, deletion, and applicable privacy information.
 

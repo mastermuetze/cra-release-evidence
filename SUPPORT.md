@@ -1,6 +1,10 @@
 # Support policy
 
-Publisher: **Warnowdigitalsolutions**
+Publisher: **Benjamin Warnow**, sole proprietorship
+
+Business name: **Warnowdigitalsolutions**
+
+Address: **An der hohlen Gasse 19, 4058 Basel**
 
 Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 

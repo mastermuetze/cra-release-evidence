@@ -116,7 +116,10 @@ The **Pilot registration** issue form is shipped as the disabled file `.github/I
 
 ## Security, support, and licensing
 
-- Publisher: **Warnowdigitalsolutions**
+- Responsible publisher: **Benjamin Warnow**
+- Legal form: **sole proprietorship**
+- Business name: **Warnowdigitalsolutions**
+- Address: **An der hohlen Gasse 19, 4058 Basel**
 - General contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 - Security policy: [SECURITY.md](SECURITY.md)
 - Support policy: [SUPPORT.md](SUPPORT.md)
