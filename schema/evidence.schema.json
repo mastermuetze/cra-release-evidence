@@ -97,7 +97,17 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["category", "sourcePath", "size", "sha256", "parseStatus"],
+        "required": [
+          "category",
+          "sourcePath",
+          "size",
+          "sha256",
+          "parseStatus",
+          "collectedAtWorkspaceCommit",
+          "producerCommit",
+          "producerCommitMatchesRelease",
+          "producerCommitRelation"
+        ],
         "properties": {
           "category": { "type": "string" },
           "sourcePath": { "type": "string" },
@@ -105,7 +115,18 @@
           "sha256": { "$ref": "#/$defs/sha256" },
           "parseStatus": { "enum": ["parsed", "opaque", "unrecognized", "parse-error", "too-large"] },
           "summary": { "type": ["object", "null"] },
-          "packagedPath": { "type": ["string", "null"] }
+          "packagedPath": { "type": ["string", "null"] },
+          "collectedAtWorkspaceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+          "producerCommit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" },
+          "producerCommitMatchesRelease": { "type": ["boolean", "null"] },
+          "producerCommitRelation": {
+            "enum": [
+              "not-declared",
+              "declared-commit-matches-release",
+              "declared-commit-mismatch",
+              "declared-commit-unresolvable"
+            ]
+          }
         },
         "additionalProperties": true
       }

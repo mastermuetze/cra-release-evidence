@@ -13,6 +13,7 @@ It is **not** a general CRA scanner, legal advice, a conformity assessment, or a
 - anchors the record to an existing Git tag and the exact checked-out commit;
 - imports supported CycloneDX 1.2–1.7 JSON or SPDX 2.2–2.3 JSON after limited structural recognition, or creates a clearly labelled manifest-only CycloneDX fallback;
 - discovers local JUnit, SARIF, Trivy, Snyk, coverage, and other configured report files;
+- optionally checks one declared producer commit for all matched report files against the release commit;
 - records changes from an explicit previous tag or the nearest reachable ancestor tag;
 - reports configured evidence gaps without turning them into legal conclusions;
 - writes `EVIDENCE.md`, `evidence.json`, `changes.json`, `MANIFEST.sha256`, and an SBOM;
@@ -75,6 +76,7 @@ The pinned 40-character SHA identifies the tested source-only prototype commit. 
 | `sbom-path` | empty | Workspace-relative supported CycloneDX JSON or SPDX JSON file. The action performs limited structural recognition, not full official-schema validation. |
 | `sbom-source-sha` | empty | Declared full source commit. Equality is checked; this is not signed provenance. |
 | `evidence-paths` | common report globs | Newline- or comma-separated workspace globs. |
+| `evidence-source-sha` | empty | Optional declared producer commit for all matched reports. A mismatch creates evidence gaps; it is not signed provenance. |
 | `required-evidence` | `sbom,test-results,security-scan,change-summary` | Local completeness policy, never a CRA result. |
 | `output-directory` | `cra-evidence` | Workspace-relative output root. |
 | `include-raw-reports` | `false` | Copies matched raw reports only after an explicit opt-in. |
@@ -129,6 +131,7 @@ The **Pilot registration** issue form is shipped as the disabled file `.github/I
 - UID/CHE identifier: **not yet available**
 - General contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 - Security policy: [SECURITY.md](SECURITY.md)
+- Human release decision record: [docs/HUMAN-RELEASE-RECORD.md](docs/HUMAN-RELEASE-RECORD.md)
 - Support policy: [SUPPORT.md](SUPPORT.md)
 - Data handling: [PRIVACY.md](PRIVACY.md)
 - Software license: [MIT](LICENSE)

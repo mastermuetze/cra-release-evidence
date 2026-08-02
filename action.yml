@@ -30,6 +30,9 @@ inputs:
       reports/**/snyk*.json
       reports/**/coverage*.json
       reports/**/coverage*.xml
+  evidence-source-sha:
+    description: "Optional full 40-character producer commit declared for all matched evidence files. Equality with the release commit is checked; this is not signed provenance."
+    required: false
   required-evidence:
     description: "Configured evidence categories. This is a completeness policy, not a legal conclusion."
     required: false
