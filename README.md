@@ -110,7 +110,7 @@ SHA-256 digests support later consistency checks. They do not prove authenticity
 
 ## Verified public demo
 
-The project-owned repository [mastermuetze/cra-release-evidence-demo](https://github.com/mastermuetze/cra-release-evidence-demo) ran release [`v0.1.0`](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.0) against immutable Action commit `3166f1771bb9e42ef8b085acf6fae9f53e7f390a`. The [release workflow](https://github.com/mastermuetze/cra-release-evidence-demo/actions/runs/30742421348) passed, and its inspected evidence ZIP plus SHA-256 checksum are attached to the release.
+The project-owned repository [mastermuetze/cra-release-evidence-demo](https://github.com/mastermuetze/cra-release-evidence-demo) ran release [`v0.1.1`](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.1) against immutable merged Action commit `137386fa91f3ee81b961e67f2fa315f4333803a0`. The [release workflow](https://github.com/mastermuetze/cra-release-evidence-demo/actions/runs/30743346821) passed, and its inspected evidence ZIP plus SHA-256 checksum are attached to the release.
 
 This proves the public consumer workflow for the source-only prototype. It is project-owned and therefore does not count as an external activation or market validation.
 

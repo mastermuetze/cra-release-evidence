@@ -1,6 +1,6 @@
 # v0.1.0 repository and Marketplace launch
 
-**Checklist date:** 1 August 2026
+**Checklist date:** 2 August 2026
 
 This file separates completed source preparation from owner-controlled or legal publication steps.
 
@@ -24,7 +24,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Foreign CI actions are pinned to reviewed 40-character SHAs.
 - [x] Repository tests check the action entrypoint, metadata, package version, schema, workflow pins, and forbidden site files.
 - [x] The current public `main` CI matrix is green in the final public repository.
-- [x] Public consumer-repository release smoke test is green against reviewed source-only commit `3166f1771bb9e42ef8b085acf6fae9f53e7f390a`; the inspected package and checksum are attached to `mastermuetze/cra-release-evidence-demo@v0.1.0`.
+- [x] Public consumer-repository release smoke test is green against reviewed, merged source-only commit `137386fa91f3ee81b961e67f2fa315f4333803a0`; the inspected package and checksum are attached to `mastermuetze/cra-release-evidence-demo@v0.1.1`.
 - [ ] Separate consumer-repository smoke test is green against the released full commit SHA.
 
 ## Owner and legal blockers
@@ -39,14 +39,15 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Record that no UID/CHE identifier is currently available.
 - [ ] Confirm any other required public identifiers or notices with an authorized reviewer.
 - [x] Enable Private Vulnerability Reporting and verify the repository-specific private reporting URL in `SECURITY.md`.
+- [x] Confirm Benjamin Warnow as the initial security owner, with a 3-business-day acknowledgement target, updates every 7 calendar days for active reports, coordinated private disclosure, and no fixed remediation deadline.
 - [ ] Before enabling GitHub Issues, pilot intake, or private/commercial intake, replace the publication-blocker marker in `PRIVACY.md` with reviewed operator identity, contact, purpose, visibility, retention, deletion, and applicable privacy information.
 
 ## Repository controls
 
 - [x] Create the public Action-only repository `mastermuetze/cra-release-evidence`.
 - [x] Set `main` as the default branch.
-- [ ] Configure a ruleset requiring the three CI matrix checks.
-- [ ] Require pull-request review for `action.yml`, `action/**`, `.github/workflows/**`, and release documents.
+- [x] Configure active ruleset [`Protect main - solo prototype`](https://github.com/mastermuetze/cra-release-evidence/rules/20230746), requiring the three CI matrix checks and routing normal changes through pull requests.
+- [x] Keep zero mandatory approvals during solo operation, with an explicit owner bypass for recovery. `CODEOWNERS` identifies sensitive files; require at least one independent Code Owner approval before a second maintainer or paid platform phase is introduced.
 - [x] Enable secret scanning, push protection, Dependabot alerts, and Dependabot security updates.
 - [x] Keep GitHub Issues disabled while operator/privacy and monitored support details remain unresolved.
 - [ ] After privacy/operator approval, rename `pilot-registration.yml.template` to `pilot-registration.yml`; optionally create the `pilot` label.
