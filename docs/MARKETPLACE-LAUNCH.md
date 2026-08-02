@@ -26,6 +26,8 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Repository tests check the action entrypoint, metadata, package version, schema, workflow pins, and forbidden site files.
 - [x] The current public `main` CI matrix is green in the final public repository.
 - [x] Public consumer-repository release smoke test is green against reviewed, merged source-only commit `625729f34a9ab8fcdecff1ab9ab2b8755b4ab00d`; the inspected package and checksum are attached to `mastermuetze/cra-release-evidence-demo@v0.1.2`, with matching SBOM, test, and security producer revisions.
+- [x] GitHub displays the Marketplace publication banner for the public repository.
+- [x] The exact Marketplace search for `CRA Release Evidence` returned zero results on 2 August 2026; uniqueness still needs rechecking in the final release dialog.
 - [ ] Separate consumer-repository smoke test is green against the released full commit SHA.
 
 ## Owner and legal blockers
@@ -34,7 +36,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Final GitHub owner is `mastermuetze`; examples use `mastermuetze/cra-release-evidence`.
 - [x] `.github/CODEOWNERS` assigns the initial prototype to `@mastermuetze`.
 - [ ] Enable 2FA for the publishing account.
-- [ ] Accept the GitHub Marketplace Developer Agreement as the authorized owner.
+- [ ] Accept the GitHub Marketplace Developer Agreement as the authorized owner. The live release form currently disables Marketplace publication until this is done.
 - [ ] Replace `EULA-DRAFT.md` with legally approved `EULA.md`; confirm suitability for Marketplace Agreement section 2.4.
 - [x] Record the supplied responsible publisher `Benjamin Warnow`, legal form `sole proprietorship`, business name `Warnowdigitalsolutions`, address `An der hohlen Gasse 19, 4058 Basel, Switzerland`, and monitored general contact `hallo@warnowdigitalsolutions.ch`.
 - [x] Record that no UID/CHE identifier is currently available.
@@ -59,7 +61,7 @@ This file separates completed source preparation from owner-controlled or legal 
 1. Complete every owner, legal, privacy, support, and security blocker above. Obtain explicit approval from the responsible owner; a script cannot provide it.
 2. Merge the exact reviewed source with green CI on all three hosted runners and record the full branch-head SHA.
 3. Create and push a signed or otherwise owner-controlled tag `v0.1.0` on that exact commit.
-4. Run `npm run preflight` until its **technical** blocker list is empty, then separately record all manual owner confirmations. A green preflight is not legal, privacy, security, or Marketplace approval.
+4. Run `npm run preflight` until its **technical Marketplace** blocker list is empty, then separately record all manual owner confirmations. Deferred pilot-intake blockers may remain only while the public pilot form remains disabled. A green preflight is not legal, privacy, security, or Marketplace approval.
 5. Create a draft GitHub Release for the existing tag using `RELEASE_NOTES_v0.1.0.md`.
 6. Attach any intended assets before publication. The action itself needs no bundle asset because the tagged source is executable.
 7. In the release dialog, resolve Marketplace validation, choose the categories, and select publication to GitHub Marketplace.
@@ -77,9 +79,11 @@ Immutable releases and moving major tags require an explicit policy. For the pro
 
 **Short description:** Build a version-specific evidence index from existing SBOM, test, security, and Git release data—without making compliance claims.
 
-**Suggested categories to confirm in the publishing dialog:** Security and Utilities.
+**Categories to confirm in the publishing dialog:** Security (primary) and Reporting (secondary).
 
 **Boundary sentence:** This action is an evidence collector, not a CRA scanner, legal advice, conformity assessment, or guarantee of compliance.
+
+The copy-ready field values and final sequence are recorded in [MARKETPLACE-SUBMISSION.md](MARKETPLACE-SUBMISSION.md).
 
 ## Official GitHub references
 

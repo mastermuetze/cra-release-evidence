@@ -9,6 +9,7 @@ const releaseTag = "v0.1.0";
 const ownerPlaceholder = ["YOUR", "GITHUB", "OWNER"].join("_");
 const operatorMarker = ["OPERATOR", "DETAILS", "REQUIRED"].join("_");
 const blockers = [];
+const pilotBlockers = [];
 const manual = [
   "Confirm the Marketplace action name is unique in the release dialog.",
   "Confirm the authorized owner accepted the Marketplace Developer Agreement and uses 2FA.",
@@ -37,8 +38,13 @@ for (const file of await walk(root)) {
     blockers.push(`Replace the GitHub owner placeholder in ${path.relative(root, file)}.`);
   }
   if (source.includes(operatorMarker)) {
-    blockers.push(`Replace the operator/privacy publication marker in ${path.relative(root, file)} with reviewed owner-specific information.`);
+    pilotBlockers.push(`Replace the operator/privacy publication marker in ${path.relative(root, file)} with reviewed owner-specific information.`);
   }
+}
+
+const publicPilotForm = existsSync(path.join(root, ".github", "ISSUE_TEMPLATE", "pilot-registration.yml"));
+if (publicPilotForm) {
+  blockers.push(...pilotBlockers.map((item) => `${item} The public pilot form is enabled.`));
 }
 
 if (existsSync(path.join(root, "EULA-DRAFT.md"))) blockers.push("Remove EULA-DRAFT.md after approved end-user terms exist.");
@@ -146,5 +152,11 @@ if (blockers.length) {
 }
 console.log("\nMANUAL CONFIRMATIONS");
 manual.forEach((item) => console.log(`- ${item}`));
+
+if (pilotBlockers.length && !publicPilotForm) {
+  console.log("\nDEFERRED PILOT INTAKE BLOCKERS");
+  console.log("These do not block the free Action listing while the public pilot form remains disabled.");
+  pilotBlockers.forEach((item) => console.log(`- ${item}`));
+}
 
 process.exitCode = blockers.length ? 2 : 0;
