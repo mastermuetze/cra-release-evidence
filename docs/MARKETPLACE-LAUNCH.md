@@ -24,6 +24,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Foreign CI actions are pinned to reviewed 40-character SHAs.
 - [x] Repository tests check the action entrypoint, metadata, package version, schema, workflow pins, and forbidden site files.
 - [x] The current public `main` CI matrix is green in the final public repository.
+- [x] Public consumer-repository release smoke test is green against reviewed source-only commit `3166f1771bb9e42ef8b085acf6fae9f53e7f390a`; the inspected package and checksum are attached to `mastermuetze/cra-release-evidence-demo@v0.1.0`.
 - [ ] Separate consumer-repository smoke test is green against the released full commit SHA.
 
 ## Owner and legal blockers
@@ -34,7 +35,9 @@ This file separates completed source preparation from owner-controlled or legal 
 - [ ] Enable 2FA for the publishing account.
 - [ ] Accept the GitHub Marketplace Developer Agreement as the authorized owner.
 - [ ] Replace `EULA-DRAFT.md` with legally approved `EULA.md`; confirm suitability for Marketplace Agreement section 2.4.
-- [ ] Add a real publisher/operator identity and monitored support contact.
+- [x] Record the supplied responsible publisher `Benjamin Warnow`, legal form `sole proprietorship`, business name `Warnowdigitalsolutions`, address `An der hohlen Gasse 19, 4058 Basel, Switzerland`, and monitored general contact `hallo@warnowdigitalsolutions.ch`.
+- [x] Record that no UID/CHE identifier is currently available.
+- [ ] Confirm any other required public identifiers or notices with an authorized reviewer.
 - [x] Enable Private Vulnerability Reporting and verify the repository-specific private reporting URL in `SECURITY.md`.
 - [ ] Before enabling GitHub Issues, pilot intake, or private/commercial intake, replace the publication-blocker marker in `PRIVACY.md` with reviewed operator identity, contact, purpose, visibility, retention, deletion, and applicable privacy information.
 
