@@ -45,7 +45,7 @@ jobs:
 
       - name: Build the release evidence index
         id: evidence
-        uses: mastermuetze/cra-release-evidence@0dd17d8ed483f3929363c2cd87936ac9c7928f8f
+        uses: mastermuetze/cra-release-evidence@625729f34a9ab8fcdecff1ab9ab2b8755b4ab00d
         with:
           release-tag: ${{ github.event.release.tag_name }}
           evidence-paths: |
@@ -112,7 +112,7 @@ SHA-256 digests support later consistency checks. They do not prove authenticity
 
 ## Verified public demo
 
-The project-owned repository [mastermuetze/cra-release-evidence-demo](https://github.com/mastermuetze/cra-release-evidence-demo) ran release [`v0.1.1`](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.1) against immutable merged Action commit `137386fa91f3ee81b961e67f2fa315f4333803a0`. The [release workflow](https://github.com/mastermuetze/cra-release-evidence-demo/actions/runs/30743346821) passed, and its inspected evidence ZIP plus SHA-256 checksum are attached to the release.
+The project-owned repository [mastermuetze/cra-release-evidence-demo](https://github.com/mastermuetze/cra-release-evidence-demo) ran release [`v0.1.2`](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.2) against immutable merged Action commit `625729f34a9ab8fcdecff1ab9ab2b8755b4ab00d`. The [release workflow](https://github.com/mastermuetze/cra-release-evidence-demo/actions/runs/30748406259) passed, and its inspected evidence ZIP plus SHA-256 checksum are attached to the release. The SBOM, test, and security evidence declare producer revisions that match the release commit.
 
 This proves the public consumer workflow for the source-only prototype. It is project-owned and therefore does not count as an external activation or market validation.
 
