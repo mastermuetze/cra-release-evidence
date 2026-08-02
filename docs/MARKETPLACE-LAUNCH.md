@@ -37,7 +37,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] `.github/CODEOWNERS` assigns the initial prototype to `@mastermuetze`.
 - [ ] Enable 2FA for the publishing account.
 - [ ] Accept the GitHub Marketplace Developer Agreement as the authorized owner. The live release form currently disables Marketplace publication until this is done.
-- [ ] Replace `EULA-DRAFT.md` with legally approved `EULA.md`; confirm suitability for Marketplace Agreement section 2.4.
+- [x] Replace `EULA-DRAFT.md` with the Publisher-approved `EULA.md`; approval recorded on 2 August 2026 in `docs/EULA-APPROVAL.md` with the exact file SHA-256.
 - [x] Record the supplied responsible publisher `Benjamin Warnow`, legal form `sole proprietorship`, business name `Warnowdigitalsolutions`, address `An der hohlen Gasse 19, 4058 Basel, Switzerland`, and monitored general contact `hallo@warnowdigitalsolutions.ch`.
 - [x] Record that no UID/CHE identifier is currently available.
 - [ ] Confirm any other required public identifiers or notices with an authorized reviewer.
@@ -58,7 +58,7 @@ This file separates completed source preparation from owner-controlled or legal 
 
 ## Release v0.1.0
 
-1. Complete every owner, legal, privacy, support, and security blocker above. Obtain explicit approval from the responsible owner; a script cannot provide it.
+1. Complete every Marketplace owner, legal, support, and security blocker above. Keep the separate public-pilot privacy/intake channel disabled while its own blockers remain. Obtain explicit approval from the responsible owner; a script cannot provide it.
 2. Merge the exact reviewed source with green CI on all three hosted runners and record the full branch-head SHA.
 3. Create and push a signed or otherwise owner-controlled tag `v0.1.0` on that exact commit.
 4. Run `npm run preflight` until its **technical Marketplace** blocker list is empty, then separately record all manual owner confirmations. Deferred pilot-intake blockers may remain only while the public pilot form remains disabled. A green preflight is not legal, privacy, security, or Marketplace approval.

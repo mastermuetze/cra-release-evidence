@@ -134,6 +134,8 @@ The **Pilot registration** issue form is shipped as the disabled file `.github/I
 - Human release decision record: [docs/HUMAN-RELEASE-RECORD.md](docs/HUMAN-RELEASE-RECORD.md)
 - Support policy: [SUPPORT.md](SUPPORT.md)
 - Data handling: [PRIVACY.md](PRIVACY.md)
+- End-user licence: [EULA.md](EULA.md)
+- EULA approval record: [docs/EULA-APPROVAL.md](docs/EULA-APPROVAL.md)
 - Software license: [MIT](LICENSE)
 
-The Marketplace publisher must replace [EULA-DRAFT.md](EULA-DRAFT.md) with a legally approved `EULA.md` before listing. The draft is not legal advice and is intentionally a release blocker.
+The authorized Publisher approved the v0.1.0 EULA on 2 August 2026. The approval record documents the exact file hash and the boundary of that human decision; it is not a CRA or release verdict.

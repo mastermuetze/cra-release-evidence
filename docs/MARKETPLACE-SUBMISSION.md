@@ -30,12 +30,12 @@
 
 Do not target the currently documented demo commit merely because it has already been tested. The release tag must point to the final reviewed Marketplace release commit.
 
-## Owner-controlled blockers
+## Owner-controlled status and remaining blockers
 
-1. Obtain appropriate human review and replace `EULA-DRAFT.md` with an approved `EULA.md`. The current GitHub Marketplace Developer Agreement requires a separate EULA for Developer Products, including free products.
-2. Accept the GitHub Marketplace Developer Agreement from the Marketplace release form as the authorized repository owner.
-3. Confirm that the publishing account has working two-factor authentication. GitHub requires 2FA to publish the release.
-4. Confirm that the publisher information, support route, security route, and listing claims are accurate. Scripts cannot provide legal, privacy, security, or business approval.
+1. **Completed:** the authorized Publisher approved `EULA.md` on 2 August 2026; `docs/EULA-APPROVAL.md` records the decision and exact file SHA-256.
+2. **Open:** accept the GitHub Marketplace Developer Agreement from the Marketplace release form as the authorized repository owner.
+3. **Open:** confirm that the publishing account has working two-factor authentication. GitHub requires 2FA to publish the release.
+4. **Open:** confirm that the publisher information, support route, security route, and listing claims remain accurate at publication time. Scripts cannot provide legal, privacy, security, or business approval.
 
 The disabled public pilot form and its separate privacy/intake review do not need to be activated for the free Action listing. They must remain disabled until the dedicated intake review is complete.
 
