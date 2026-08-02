@@ -15,7 +15,8 @@ GitHub and any scanner actions used in the surrounding workflow process data und
 - Responsible publisher: **Benjamin Warnow**
 - Legal form: **sole proprietorship**
 - Business name: **Warnowdigitalsolutions**
-- Address: **An der hohlen Gasse 19, 4058 Basel**
+- Address: **An der hohlen Gasse 19, 4058 Basel, Switzerland**
+- UID/CHE identifier: **not yet available**
 - Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 
 Do not send SBOMs, findings, credentials, source code, private repository details, customer information, or other confidential evidence to this address. These supplied publisher details do not by themselves constitute a reviewed privacy notice.
@@ -26,12 +27,12 @@ The pilot issue form is optional and stored by GitHub as a public issue. A submi
 
 ## Publication blocker
 
-**Status: `OPERATOR_DETAILS_REQUIRED`.** The responsible publisher, legal form, business name, address, and general contact above are confirmed. The marker is retained as a technical publication blocker. Before GitHub Issues, the pilot form, or any separate private/commercial intake is enabled, the responsible owner must replace it with concrete, reviewed information covering at least:
+**Status: `OPERATOR_DETAILS_REQUIRED`.** The responsible publisher, legal form, business name, address including country, absence of a current UID/CHE identifier, and general contact above are confirmed. The marker is retained as a technical publication blocker. Before GitHub Issues, the pilot form, or any separate private/commercial intake is enabled, the responsible owner must replace it with concrete, reviewed information covering at least:
 
 - purposes and scope of the public pilot intake;
 - GitHub/public visibility and any separate systems used;
 - retention and deletion rules plus a request channel; and
 - the reviewed privacy notice and approvals applicable to that operator;
-- any country, register, tax, or other public-identification details an authorized reviewer determines should be added.
+- any other register, tax, or public-identification details an authorized reviewer determines should be added.
 
 This file describes technical behavior only. Its presence is not a legal or privacy approval, and the publication preflight intentionally fails while the marker remains.

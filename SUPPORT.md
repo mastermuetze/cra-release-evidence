@@ -4,7 +4,9 @@ Publisher: **Benjamin Warnow**, sole proprietorship
 
 Business name: **Warnowdigitalsolutions**
 
-Address: **An der hohlen Gasse 19, 4058 Basel**
+Address: **An der hohlen Gasse 19, 4058 Basel, Switzerland**
+
+UID/CHE identifier: **not yet available**
 
 Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 
