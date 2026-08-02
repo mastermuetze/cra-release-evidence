@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -72,10 +73,13 @@ test("export excludes the website and preserves the safety boundary", async () =
 });
 
 test("Marketplace release handoff is copy-ready and keeps owner decisions manual", async () => {
-  const [releaseNotes, submission, preflight] = await Promise.all([
+  const [releaseNotes, submission, preflight, eula, approval, rootFiles] = await Promise.all([
     text("RELEASE_NOTES_v0.1.0.md"),
     text("docs/MARKETPLACE-SUBMISSION.md"),
     text("scripts/preflight.mjs"),
+    text("EULA.md"),
+    text("docs/EULA-APPROVAL.md"),
+    readdir(root),
   ]);
 
   assert.doesNotMatch(releaseNotes, /replace all owner placeholders/i);
@@ -87,4 +91,12 @@ test("Marketplace release handoff is copy-ready and keeps owner decisions manual
   assert.match(submission, /not legal approval/i);
   assert.match(preflight, /DEFERRED PILOT INTAKE BLOCKERS/);
   assert.match(preflight, /public pilot form remains disabled/);
+  assert.equal(rootFiles.includes("EULA-DRAFT.md"), false);
+  assert.doesNotMatch(eula, /LEGAL REVIEW REQUIRED|TODO|TBD/);
+  const canonicalEula = eula.replace(/\r\n/g, "\n");
+  assert.doesNotMatch(canonicalEula, /\r/);
+  const eulaSha256 = createHash("sha256").update(canonicalEula).digest("hex");
+  assert.equal(eulaSha256, "751dcc470a0b38fce238e9e861b4184a4ffcba134c74c148f575cba9930a04c9");
+  assert.match(approval, new RegExp(eulaSha256));
+  assert.match(approval, /authorized Publisher/i);
 });
