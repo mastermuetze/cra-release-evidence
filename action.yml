@@ -1,5 +1,5 @@
 name: "CRA Release Evidence"
-description: "Build a version-specific evidence package from existing release, test, security, and SBOM files without making compliance claims."
+description: "Build versioned release evidence from existing SBOM, test, security, and Git data without compliance claims."
 author: "CRA Release Evidence contributors"
 
 branding:
