@@ -24,6 +24,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] Foreign CI actions are pinned to reviewed 40-character SHAs.
 - [x] Repository tests check the action entrypoint, metadata, package version, schema, workflow pins, and forbidden site files.
 - [x] The current public `main` CI matrix is green in the final public repository.
+- [x] Public consumer-repository release smoke test is green against reviewed source-only commit `3166f1771bb9e42ef8b085acf6fae9f53e7f390a`; the inspected package and checksum are attached to `mastermuetze/cra-release-evidence-demo@v0.1.0`.
 - [ ] Separate consumer-repository smoke test is green against the released full commit SHA.
 
 ## Owner and legal blockers

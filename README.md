@@ -108,6 +108,12 @@ SHA-256 digests support later consistency checks. They do not prove authenticity
 - `structureRecognized` means the supported version and selected required fields passed the action's limited checks. `schemaValidation` remains `not-performed`; use a dedicated validator when full CycloneDX/SPDX schema conformance matters.
 - The manifest-only SBOM fallback is not a binary inventory and may be incomplete. Import an SBOM from the actual build for stronger release evidence.
 
+## Verified public demo
+
+The project-owned repository [mastermuetze/cra-release-evidence-demo](https://github.com/mastermuetze/cra-release-evidence-demo) ran release [`v0.1.0`](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.0) against immutable Action commit `3166f1771bb9e42ef8b085acf6fae9f53e7f390a`. The [release workflow](https://github.com/mastermuetze/cra-release-evidence-demo/actions/runs/30742421348) passed, and its inspected evidence ZIP plus SHA-256 checksum are attached to the release.
+
+This proves the public consumer workflow for the source-only prototype. It is project-owned and therefore does not count as an external activation or market validation.
+
 ## Pilot validation
 
 The project is validating the free collector before building any paid platform. A real activation means one external repository produced a package for an actual product release. Stars, clicks, forks, demo tags, and copied workflow files do not count.
