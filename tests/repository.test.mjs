@@ -93,7 +93,9 @@ test("Marketplace release handoff is copy-ready and keeps owner decisions manual
   assert.match(preflight, /public pilot form remains disabled/);
   assert.equal(rootFiles.includes("EULA-DRAFT.md"), false);
   assert.doesNotMatch(eula, /LEGAL REVIEW REQUIRED|TODO|TBD/);
-  const eulaSha256 = createHash("sha256").update(eula).digest("hex");
+  const canonicalEula = eula.replace(/\r\n/g, "\n");
+  assert.doesNotMatch(canonicalEula, /\r/);
+  const eulaSha256 = createHash("sha256").update(canonicalEula).digest("hex");
   assert.equal(eulaSha256, "751dcc470a0b38fce238e9e861b4184a4ffcba134c74c148f575cba9930a04c9");
   assert.match(approval, new RegExp(eulaSha256));
   assert.match(approval, /authorized Publisher/i);
