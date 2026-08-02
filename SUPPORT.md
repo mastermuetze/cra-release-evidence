@@ -10,7 +10,7 @@ UID/CHE identifier: **not yet available**
 
 Monitored general contact: [hallo@warnowdigitalsolutions.ch](mailto:hallo@warnowdigitalsolutions.ch)
 
-Use the general contact for setup questions and synthetic, non-confidential defect descriptions. Public GitHub Issues and Discussions remain disabled during the source-only prototype. Before a release or Marketplace listing, the publisher must define response and maintenance expectations.
+Use the general contact for setup questions and synthetic, non-confidential defect descriptions. Public GitHub Issues and Discussions remain disabled during the source-only prototype. Security-response targets are documented in `SECURITY.md`; no general support response time, maintenance period, uptime, or legal/compliance commitment is promised during prototype validation.
 
 Planned routing after public channels are explicitly enabled:
 

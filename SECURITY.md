@@ -14,4 +14,8 @@ Do not disclose vulnerabilities, exploit details, private SBOMs, tokens, source 
 
 ## Expected response policy
 
-A private report creates a draft security advisory visible to the repository's security managers. No acknowledgement or remediation service level is promised for the source-only prototype. The publisher must define a monitored security owner, acknowledgement target, update cadence, and coordinated disclosure process before `v0.1.0` is listed. Until those commitments exist, the Marketplace preflight remains blocked.
+A private report creates a draft security advisory visible to the repository's security managers. The publisher and initial security owner is Benjamin Warnow.
+
+The security owner targets an acknowledgement within **3 business days**. While an accepted report remains active, the reporter should receive a status update at least every **7 calendar days**, unless a different private cadence is agreed.
+
+Reports are triaged according to severity, affected versions, exploitability, and available mitigations. No fixed remediation deadline is promised. The security owner and reporter should coordinate disclosure privately; a fix, release note, or GitHub Security Advisory will be published when appropriate. These are project response targets, not a guarantee of product security, legal compliance, or a particular resolution time.
