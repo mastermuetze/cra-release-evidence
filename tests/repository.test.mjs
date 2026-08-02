@@ -70,3 +70,21 @@ test("export excludes the website and preserves the safety boundary", async () =
   assert.match(pilot, /100 verified activations/i);
   assert.match(pilot, /10 qualified willingness-to-pay/i);
 });
+
+test("Marketplace release handoff is copy-ready and keeps owner decisions manual", async () => {
+  const [releaseNotes, submission, preflight] = await Promise.all([
+    text("RELEASE_NOTES_v0.1.0.md"),
+    text("docs/MARKETPLACE-SUBMISSION.md"),
+    text("scripts/preflight.mjs"),
+  ]);
+
+  assert.doesNotMatch(releaseNotes, /replace all owner placeholders/i);
+  assert.match(releaseNotes, /contents: read/);
+  assert.match(releaseNotes, /not a CRA scanner/i);
+  assert.match(submission, /Primary category \| \*\*Security\*\*/);
+  assert.match(submission, /Secondary category \| \*\*Reporting\*\*/);
+  assert.match(submission, /explicit owner confirmation/i);
+  assert.match(submission, /not legal approval/i);
+  assert.match(preflight, /DEFERRED PILOT INTAKE BLOCKERS/);
+  assert.match(preflight, /public pilot form remains disabled/);
+});
