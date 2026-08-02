@@ -72,6 +72,24 @@ test("export excludes the website and preserves the safety boundary", async () =
   assert.match(pilot, /10 qualified willingness-to-pay/i);
 });
 
+test("activation reporting is voluntary, minimal, and never counts automatically", async () => {
+  const [form, privacy, pilot] = await Promise.all([
+    text(".github/ISSUE_TEMPLATE/activation-report.yml"),
+    text("PRIVACY.md"),
+    text("docs/PILOT.md"),
+  ]);
+
+  assert.match(form, /labels:\s*\n\s+- activation-candidate/);
+  assert.match(form, /candidate only/i);
+  assert.match(form, /EVIDENCE\.md and parseable evidence\.json/i);
+  assert.match(form, /Do not upload or paste SBOMs, findings, raw reports, source code, tokens/i);
+  assert.match(form, /random opaque ID/i);
+  assert.match(form, /Never use a plain hash/i);
+  assert.doesNotMatch(form, /id:\s*(?:email|phone|company_name)\b/i);
+  assert.match(privacy, /creates a candidate record only/i);
+  assert.match(pilot, /does not count automatically/i);
+});
+
 test("Marketplace release handoff is copy-ready and keeps owner decisions manual", async () => {
   const [releaseNotes, submission, preflight, eula, approval, rootFiles] = await Promise.all([
     text("RELEASE_NOTES_v0.1.0.md"),
