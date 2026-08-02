@@ -685,6 +685,28 @@ async function gitSuccess(workspace, args) {
   }
 }
 
+async function declaredCommitRelation(workspace, value, releaseCommit) {
+  if (!value) {
+    return {
+      commit: null,
+      matchesRelease: null,
+      relation: "not-declared",
+    };
+  }
+  const normalized = String(value).trim().toLowerCase();
+  const exists = /^[a-f0-9]{40}$/.test(normalized)
+    && await gitSuccess(workspace, ["cat-file", "-e", `${normalized}^{commit}`]);
+  return {
+    commit: exists ? normalized : null,
+    matchesRelease: exists ? normalized === releaseCommit.toLowerCase() : false,
+    relation: !exists
+      ? "declared-commit-unresolvable"
+      : normalized === releaseCommit.toLowerCase()
+        ? "declared-commit-matches-release"
+        : "declared-commit-mismatch",
+  };
+}
+
 function normalizeTagName(value) {
   return String(value || "").replace(/^refs\/tags\//, "").trim();
 }
@@ -770,7 +792,10 @@ function evidencePresence(sbom, evidence, changes) {
   const present = new Set();
   if (sbom?.structureRecognized === true) present.add("sbom");
   if (changes?.available) present.add("change-summary");
-  for (const item of evidence.filter((entry) => entry.parseStatus === "parsed")) present.add(item.category);
+  for (const item of evidence.filter((entry) => entry.parseStatus === "parsed"
+    && !["declared-commit-mismatch", "declared-commit-unresolvable"].includes(entry.producerCommitRelation))) {
+    present.add(item.category);
+  }
   return present;
 }
 
@@ -780,14 +805,14 @@ function jsonCell(value) {
   return JSON.stringify(value);
 }
 
-function markdownFor(report) {
+function markdownBody(report) {
   const rows = report.policy.requiredEvidence.map((category) => {
     const gap = report.gaps.find((entry) => entry.category === category);
     return `| ${category} | ${gap ? "Missing" : "Found"} | ${gap?.message ?? "Indexed with a digest in evidence.json"} |`;
   }).join("\n");
   const evidenceRows = report.evidence.length > 0
-    ? report.evidence.map((item) => `| ${item.category} | \`${item.sourcePath}\` | ${item.parseStatus} | \`${item.sha256.slice(0, 12)}…\` | ${jsonCell(item.summary)} |`).join("\n")
-    : "| — | No matching reports | — | — | — |";
+    ? report.evidence.map((item) => `| ${item.category} | \`${item.sourcePath}\` | ${item.parseStatus} | ${item.producerCommitRelation} | \`${item.sha256.slice(0, 12)}…\` | ${jsonCell(item.summary)} |`).join("\n")
+    : "| — | No matching reports | — | — | — | — |";
   const gaps = report.gaps.length > 0
     ? report.gaps.map((gap) => `- **${gap.category}:** ${gap.message}`).join("\n")
     : "- No gaps against the configured evidence list.";
@@ -796,6 +821,14 @@ function markdownFor(report) {
     : report.changes.reason;
 
   return `# Release evidence index — ${report.release.tag}\n\n> Automated evidence index, not a conformity assessment. “Found” means a configured file or generated record was indexed; it does not mean a legal requirement is fulfilled or that the source is authentic.\n\n## Release identity\n\n- Repository: \`${report.release.repository}\`\n- Tag: \`${report.release.tag}\`\n- Commit: \`${report.release.commit}\`\n- Previous tag: \`${report.changes.previousTag ?? "none"}\`\n- Generated: ${report.generatedAt}\n- Workflow run: ${report.release.workflowRunUrl || "not available"}\n\n## Configured completeness\n\nOverall status: **${report.status}** (configured evidence only; never a CRA compliance result).\n\n| Category | Status | Note |\n|---|---|---|\n${rows}\n\n## SBOM\n\n- Mode: ${report.sbom.mode}\n- Format: ${report.sbom.format}\n- Structure recognition: ${report.sbom.structureRecognized ? "passed supported structural checks" : "not recognized"}\n- Full schema validation: ${report.sbom.schemaValidation}\n- Components: ${report.sbom.components ?? "unknown"}\n- SHA-256: \`${report.sbom.sha256}\`\n- Source-commit relation: ${report.sbom.sourceCommitRelation}\n- Note: ${report.sbom.note}\n\n## Collected reports\n\n| Type | Source | Parse status | SHA-256 | Summary |\n|---|---|---|---|---|\n${evidenceRows}\n\nRaw reports are ${report.policy.includeRawReports ? "copied into `raw/`; review confidentiality before publishing" : "not copied by default; only digests and summaries remain in `evidence.json`. Preserve the original sources separately"}.\n\n## Changes from the previous release\n\n${changed}\n\n${report.changes.diffStat ? `\n\`\`\`text\n${report.changes.diffStat}\n\`\`\`\n` : ""}\n## Evidence gaps\n\n${gaps}\n\n## Human checkpoints — not automated\n\n${report.manualCheckpoints.map((item) => `- **${item.title}:** ${item.status}. ${item.note}`).join("\n")}\n\n## Boundary\n\nThis index documents automatically discovered artifacts and declared metadata for the named version. SHA-256 digests support later consistency checks but do not prove authenticity or tamper resistance without a trusted signed attestation or immutable store. Presence is not legal sufficiency. Scope, product classification, cybersecurity risk assessment, residual-risk acceptance, conformity assessment, EU declaration of conformity, CE marking, and notifications to authorities or users remain the manufacturer’s responsibility and require review or action by authorized people. CRA Release Evidence is not legal advice, a CRA scanner, or a guarantee of compliance.\n`;
+}
+
+function markdownFor(report) {
+  return markdownBody(report)
+    .replace(
+      "| Type | Source | Parse status | SHA-256 | Summary |\n|---|---|---|---|---|",
+      "| Type | Source | Parse status | Producer-commit relation | SHA-256 | Summary |\n|---|---|---|---|---|---|",
+    );
 }
 
 async function writeManifest(outDir, files) {
@@ -849,10 +882,13 @@ async function main() {
   const evidence = patterns.length > 0
     ? await collectEvidence(workspace, outDir, evidenceFiles, patterns, includeRawReports)
     : [];
+  const declaredEvidenceSha = input("evidence-source-sha");
+  const evidenceRevision = await declaredCommitRelation(workspace, declaredEvidenceSha, changes.currentSha);
   for (const item of evidence) {
     item.collectedAtWorkspaceCommit = changes.currentSha;
-    item.producerCommit = null;
-    item.producerCommitRelation = "not-declared";
+    item.producerCommit = evidenceRevision.commit;
+    item.producerCommitMatchesRelease = evidenceRevision.matchesRelease;
+    item.producerCommitRelation = evidenceRevision.relation;
   }
   const declaredSbomSha = input("sbom-source-sha");
   if (sbom.mode === "generated-manifest-fallback") {
@@ -861,16 +897,10 @@ async function main() {
     sbom.sourceCommitRelation = "observed-workspace-head-matches-release";
     sbom.note = "Generated from manifests while workspace HEAD matched the release commit. This is a manifest-only inventory; no independent full CycloneDX schema validation was performed, and its digest is not a signed provenance attestation.";
   } else if (declaredSbomSha) {
-    const normalizedDeclaredSha = declaredSbomSha.toLowerCase();
-    const exists = /^[a-f0-9]{40}$/.test(normalizedDeclaredSha)
-      && await gitSuccess(workspace, ["cat-file", "-e", `${normalizedDeclaredSha}^{commit}`]);
-    sbom.sourceCommit = exists ? normalizedDeclaredSha : null;
-    sbom.sourceCommitMatchesRelease = exists ? normalizedDeclaredSha === changes.currentSha.toLowerCase() : false;
-    sbom.sourceCommitRelation = !exists
-      ? "declared-commit-unresolvable"
-      : sbom.sourceCommitMatchesRelease
-        ? "declared-commit-matches-release"
-        : "declared-commit-mismatch";
+    const sbomRevision = await declaredCommitRelation(workspace, declaredSbomSha, changes.currentSha);
+    sbom.sourceCommit = sbomRevision.commit;
+    sbom.sourceCommitMatchesRelease = sbomRevision.matchesRelease;
+    sbom.sourceCommitRelation = sbomRevision.relation;
     const recognitionNote = sbom.structureRecognized
       ? "Limited supported-structure checks passed; no full CycloneDX or SPDX schema validation was performed."
       : "The file did not pass the supported structural checks; no full CycloneDX or SPDX schema validation was performed.";
@@ -897,6 +927,9 @@ async function main() {
   }
   for (const item of evidence.filter((entry) => entry.parseStatus !== "parsed")) {
     gaps.push({ category: "report-parse", message: `${item.sourcePath} is ${item.parseStatus}; its digest was retained but it does not satisfy ${item.category}.` });
+  }
+  if (declaredEvidenceSha && evidenceRevision.matchesRelease !== true) {
+    gaps.push({ category: "evidence-revision", message: "The declared producer commit for matched evidence files is invalid, unavailable, or different from the release commit." });
   }
 
   const repository = process.env.GITHUB_REPOSITORY || path.basename(workspace);

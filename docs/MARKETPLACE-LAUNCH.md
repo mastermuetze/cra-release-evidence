@@ -12,6 +12,7 @@ This file separates completed source preparation from owner-controlled or legal 
 - [x] No vendor backend or action telemetry.
 - [x] Raw reports remain opt-in.
 - [x] CRA scanning, legal advice, conformity decisions, the EU declaration of conformity, CE marking, and regulatory reporting are explicitly out of scope.
+- [x] Human legal, risk, conformity, notification, and release decisions have a separate non-automated record template in `docs/HUMAN-RELEASE-RECORD.md`.
 - [x] SHA-256 is described as a consistency mechanism, not authenticity or signed provenance.
 - [x] SBOM support is accurately limited to supported CycloneDX 1.2–1.7 JSON and SPDX 2.2–2.3 JSON structural recognition plus a manifest-only JSON fallback; full official-schema validation is not claimed.
 - [x] Automatic predecessor selection is described as the nearest reachable ancestor tag, not guaranteed release chronology.

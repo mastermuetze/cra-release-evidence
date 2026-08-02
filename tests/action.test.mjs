@@ -185,12 +185,57 @@ test("builds a complete versioned evidence package from local release inputs", a
   assert.equal(report.sbom.sourceCommitRelation, "observed-workspace-head-matches-release");
   assert.ok(report.sbom.components >= 2);
   assert.deepEqual(new Set(report.evidence.map((item) => item.category)), new Set(["security-scan", "test-results"]));
+  assert.ok(report.evidence.every((item) => item.collectedAtWorkspaceCommit === report.release.commit));
+  assert.ok(report.evidence.every((item) => item.producerCommit === null));
+  assert.ok(report.evidence.every((item) => item.producerCommitMatchesRelease === null));
+  assert.ok(report.evidence.every((item) => item.producerCommitRelation === "not-declared"));
   assert.equal(report.status, "complete");
   assert.equal(report.gaps.length, 0);
   assert.match(markdown, /not a conformity assessment/i);
   assert.match(manifest, /evidence\.json/);
   assert.match(outputs, /package-dir<</);
   assertMatchesProjectSchema(evidenceSchema, report);
+});
+
+test("checks a declared evidence producer commit against the release revision", async (t) => {
+  const root = await fixture();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const releaseSha = git(root, "rev-parse", "v1.1.0^{commit}");
+  const previousSha = git(root, "rev-parse", "v1.0.0^{commit}");
+
+  const matching = run(process.execPath, [actionPath], root, {
+    ...process.env,
+    GITHUB_WORKSPACE: root,
+    GITHUB_REF_NAME: "v1.1.0",
+    INPUT_EVIDENCE_PATHS: "reports/**/*.xml\nreports/**/*.sarif",
+    INPUT_EVIDENCE_SOURCE_SHA: releaseSha,
+    INPUT_REQUIRED_EVIDENCE: "sbom,test-results,security-scan,change-summary",
+  });
+  assert.equal(matching.status, 0, matching.stderr || matching.stdout);
+  let report = JSON.parse(await readFile(path.join(await generatedPackage(root), "evidence.json"), "utf8"));
+  assert.equal(report.status, "complete");
+  assert.ok(report.evidence.every((item) => item.producerCommit === releaseSha));
+  assert.ok(report.evidence.every((item) => item.producerCommitMatchesRelease === true));
+  assert.ok(report.evidence.every((item) => item.producerCommitRelation === "declared-commit-matches-release"));
+
+  await rm(path.join(root, "cra-evidence"), { recursive: true, force: true });
+  const mismatching = run(process.execPath, [actionPath], root, {
+    ...process.env,
+    GITHUB_WORKSPACE: root,
+    GITHUB_REF_NAME: "v1.1.0",
+    INPUT_EVIDENCE_PATHS: "reports/**/*.xml\nreports/**/*.sarif",
+    INPUT_EVIDENCE_SOURCE_SHA: previousSha,
+    INPUT_REQUIRED_EVIDENCE: "sbom,test-results,security-scan,change-summary",
+  });
+  assert.equal(mismatching.status, 0, mismatching.stderr || mismatching.stdout);
+  report = JSON.parse(await readFile(path.join(await generatedPackage(root), "evidence.json"), "utf8"));
+  assert.equal(report.status, "gaps-found");
+  assert.ok(report.evidence.every((item) => item.producerCommit === previousSha));
+  assert.ok(report.evidence.every((item) => item.producerCommitMatchesRelease === false));
+  assert.ok(report.evidence.every((item) => item.producerCommitRelation === "declared-commit-mismatch"));
+  assert.ok(report.gaps.some((gap) => gap.category === "evidence-revision"));
+  assert.ok(report.gaps.some((gap) => gap.category === "test-results"));
+  assert.ok(report.gaps.some((gap) => gap.category === "security-scan"));
 });
 
 test("writes the package before failing on configured gaps", async (t) => {

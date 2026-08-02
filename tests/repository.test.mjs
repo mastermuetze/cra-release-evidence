@@ -20,6 +20,7 @@ test("standalone repository contains one valid root action entrypoint", async ()
   assert.match(metadata, /using:\s*"node24"/);
   assert.match(metadata, /main:\s*"action\/index\.mjs"/);
   assert.match(metadata, /SPDX JSON or CycloneDX JSON/);
+  assert.match(metadata, /evidence-source-sha:/);
   await access(path.join(root, "action", "index.mjs"));
 });
 
