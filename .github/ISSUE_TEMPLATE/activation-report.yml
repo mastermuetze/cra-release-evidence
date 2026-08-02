@@ -1,0 +1,92 @@
+name: Activation report
+description: Voluntarily report one real external release activation for human verification.
+title: "[Activation] "
+labels:
+  - activation-candidate
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing CRA Release Evidence on a real product release.
+
+        This public issue creates a **candidate only**. It is counted after human
+        verification and deduplication. Marketplace views, stars, workflow copies,
+        test tags, project-controlled demos, and unverified claims do not count.
+
+        Do not upload or paste SBOMs, findings, raw reports, source code, tokens,
+        customer information, internal repository details, or other confidential
+        evidence. Your public GitHub account, profile, and issue metadata are visible
+        to GitHub and issue readers.
+  - type: input
+    id: action_version
+    attributes:
+      label: Action version or full commit SHA
+      placeholder: v0.1.0 or 62c7f6d5a635390cfa8f6b3c2364c240e3bb647c
+    validations:
+      required: true
+  - type: dropdown
+    id: segment
+    attributes:
+      label: Product segment
+      options:
+        - Installable commercial software
+        - Commercial developer tool
+        - Device firmware
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: repository_visibility
+    attributes:
+      label: Repository visibility
+      options:
+        - Public
+        - Private
+    validations:
+      required: true
+  - type: input
+    id: activation_key
+    attributes:
+      label: Stable activation key
+      description: For a public repository, use its URL. For a private repository, use a new random opaque ID that contains no repository or company name. Never use a plain hash of a private name.
+      placeholder: https://github.com/org/repo or cre-a7f3c2d1...
+    validations:
+      required: true
+  - type: input
+    id: release_date
+    attributes:
+      label: Product release date
+      description: Use YYYY-MM-DD. Do not include an internal release name.
+      placeholder: "2026-08-02"
+    validations:
+      required: true
+  - type: dropdown
+    id: verification_method
+    attributes:
+      label: Minimal verification route
+      description: Public links are optional below. Private verification must be arranged separately; never post private evidence here.
+      options:
+        - Public workflow run
+        - Public release or package
+        - Private verification requested
+    validations:
+      required: true
+  - type: input
+    id: public_verification_url
+    attributes:
+      label: Public verification URL (optional)
+      description: Link only to material that is already intentionally public. Leave blank for private repositories.
+      placeholder: https://github.com/org/repo/actions/runs/...
+  - type: checkboxes
+    id: counting_confirmation
+    attributes:
+      label: Counting confirmation
+      options:
+        - label: This repository is external to the CRA Release Evidence project and is not a project-controlled or commissioned demo.
+          required: true
+        - label: The action ran for an actual product release, not only a test tag or copied workflow.
+          required: true
+        - label: The run generated both EVIDENCE.md and parseable evidence.json files.
+          required: true
+        - label: This issue contains no credentials, private evidence, confidential product information, or additional personal data beyond the public GitHub account, profile, and issue metadata described above.
+          required: true
