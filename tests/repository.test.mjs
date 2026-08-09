@@ -45,13 +45,32 @@ test("package, schema, and generator versions agree", async () => {
 });
 
 test("foreign actions are pinned to full SHAs", async () => {
-  const files = [".github/workflows/ci.yml", "examples/release-evidence.yml"];
+  const files = [
+    ".github/workflows/ci.yml",
+    "examples/release-evidence.yml",
+    "examples/trivy-release-evidence.yml",
+  ];
   for (const file of files) {
     const source = await text(file);
-    for (const match of source.matchAll(/uses:\s*(actions\/[^@\s]+)@([^\s#]+)/g)) {
+    for (const match of source.matchAll(/uses:\s*([^@\s]+)@([^\s#]+)/g)) {
       assert.match(match[2], /^[0-9a-f]{40}$/i, `${file}: ${match[1]} must use a full SHA`);
     }
   }
+});
+
+test("Trivy integration remains copy-ready and preserves the product boundary", async () => {
+  const [workflow, guide] = await Promise.all([
+    text("examples/trivy-release-evidence.yml"),
+    text("docs/TRIVY-RELEASE-EVIDENCE.md"),
+  ]);
+  assert.match(workflow, /aquasecurity\/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25/);
+  assert.match(workflow, /format: cyclonedx/);
+  assert.match(workflow, /format: sarif/);
+  assert.match(workflow, /permissions:\s*\n\s+contents: read/);
+  assert.match(workflow, /include-raw-reports: false/);
+  assert.match(guide, /not a CRA assessment/i);
+  assert.match(guide, /after-publication archive/i);
+  assert.match(guide, /voluntarily report an activation/i);
 });
 
 test("export excludes the website and preserves the safety boundary", async () => {
