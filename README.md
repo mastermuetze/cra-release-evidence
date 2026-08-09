@@ -65,6 +65,8 @@ jobs:
 
 The release tag is convenient for evaluation. For production, resolve `v0.1.0` to its reviewed 40-character commit SHA and pin that immutable SHA in the consuming workflow.
 
+Already using Trivy? Start with the copy-ready [Trivy + CycloneDX + SARIF workflow](examples/trivy-release-evidence.yml) and the [step-by-step integration guide](docs/TRIVY-RELEASE-EVIDENCE.md).
+
 ## Inputs
 
 | Input | Default | Meaning |
@@ -118,7 +120,7 @@ This proves the public consumer workflow for the source-only prototype. It is pr
 
 The project is validating the free collector before building any paid platform. A real activation means one external repository produced a package for an actual product release. Stars, clicks, forks, demo tags, and copied workflow files do not count.
 
-The **Pilot registration** issue form is shipped as the disabled file `.github/ISSUE_TEMPLATE/pilot-registration.yml.template`. Activate it only after the repository owner has replaced the operator/privacy publication blocker. Never attach private SBOMs, findings, source code, internal paths, credentials, raw evidence, or additional personal data to a public issue. Public GitHub account, profile, and issue metadata remain visible. See [docs/PILOT.md](docs/PILOT.md).
+The optional [Activation report](https://github.com/mastermuetze/cra-release-evidence/issues/new?template=activation-report.yml) creates a public candidate only. It counts only after human verification and deduplication. Never attach private SBOMs, findings, source code, internal paths, credentials, raw evidence, or additional personal data to a public issue. Public GitHub account, profile, and issue metadata remain visible. The separate commercial pilot form remains disabled. See [docs/PILOT.md](docs/PILOT.md).
 
 ## Security, support, and licensing
 

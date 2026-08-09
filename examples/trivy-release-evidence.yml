@@ -1,0 +1,67 @@
+name: Trivy release evidence
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the released revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Prepare local report directory
+        run: mkdir -p reports
+
+      - name: Generate CycloneDX SBOM with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: cyclonedx
+          output: reports/bom.cdx.json
+          exit-code: "0"
+
+      - name: Generate SARIF security report with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: reports/trivy.sarif
+          exit-code: "0"
+          skip-setup-trivy: true
+
+      - name: Record the checked-out release commit
+        id: release
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build the versioned evidence package
+        id: evidence
+        uses: mastermuetze/cra-release-evidence@62c7f6d5a635390cfa8f6b3c2364c240e3bb647c # v0.1.0
+        with:
+          release-tag: ${{ github.event.release.tag_name }}
+          sbom-path: reports/bom.cdx.json
+          sbom-source-sha: ${{ steps.release.outputs.sha }}
+          evidence-paths: reports/trivy.sarif
+          evidence-source-sha: ${{ steps.release.outputs.sha }}
+          required-evidence: sbom,security-scan,change-summary
+          include-raw-reports: false
+          fail-on-gaps: false
+
+      - name: Retain the evidence package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cra-evidence-${{ github.event.release.tag_name }}
+          path: ${{ steps.evidence.outputs.package-dir }}
+          if-no-files-found: error
+          retention-days: 90
