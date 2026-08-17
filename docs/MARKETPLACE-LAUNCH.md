@@ -68,7 +68,7 @@ This file separates completed source preparation from owner-controlled or legal 
 8. Confirm the action name is unique immediately before publication.
 9. Publish the release and enable immutable releases when compatible with the chosen tag strategy.
 10. Run a consumer workflow pinned to the release commit SHA.
-11. Verify that the repository, released commit/tag, README `#quick-start` anchor, pilot URL (if enabled), and Marketplace listing (once enabled) are publicly reachable and mutually consistent.
+11. Verify that the repository, released commit/tag, README `#install-with-trivy-in-five-minutes` anchor, activation-report URL, and Marketplace listing are publicly reachable and mutually consistent.
 12. Only then update the separate product landing configuration with the verified repository slug, full action SHA, and live URLs.
 
 Immutable releases and moving major tags require an explicit policy. For the prototype, prefer the fixed `v0.1.0` release and document the full SHA; do not create convenience tags until maintenance responsibilities are clear.

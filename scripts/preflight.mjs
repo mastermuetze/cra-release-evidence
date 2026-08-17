@@ -17,7 +17,7 @@ const manual = [
   "Confirm the operator/privacy information and intake process were reviewed before enabling the public pilot form.",
   "Confirm the final repository is public and all required branch rules and CI checks are active and green.",
   "Run a separate consumer-repository smoke test against the released full SHA.",
-  "Verify the live repository, release/tag, README #quick-start anchor, optional pilot URL, and Marketplace URL before changing the landing-page phase.",
+  "Verify the live repository, release/tag, README #install-with-trivy-in-five-minutes anchor, optional activation-report URL, and Marketplace URL before changing the landing-page phase.",
 ];
 
 async function walk(directory) {
