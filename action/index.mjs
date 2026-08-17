@@ -831,6 +831,10 @@ function markdownFor(report) {
     );
 }
 
+function activationConfirmation() {
+  return `\n## Optional activation confirmation\n\nIf this ran in an external repository for an actual product release and generated both \`EVIDENCE.md\` and parseable \`evidence.json\`, you may read the [activation privacy boundary](https://github.com/mastermuetze/cra-release-evidence/blob/main/docs/ACTIVATION.md) and [confirm the activation](https://github.com/mastermuetze/cra-release-evidence/issues/new?template=activation-report.yml).\n\nThe action sends no activation telemetry and never uploads evidence to the publisher. The optional form creates a public candidate only; a human verifies and deduplicates it before counting. Your public GitHub account, profile, answers, and issue metadata are visible to GitHub and issue readers. Do not attach or paste SBOMs, findings, source code, raw reports, internal paths, credentials, private repository names, or other confidential information.\n`;
+}
+
 async function writeManifest(outDir, files) {
   const lines = [];
   for (const file of files) {
@@ -994,7 +998,9 @@ async function main() {
   await setOutput("status", report.status);
   await setOutput("gap-count", String(gaps.length));
   await setOutput("release-tag", releaseTag);
-  if (process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, markdownFor(report), "utf8");
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, `${markdownFor(report)}${activationConfirmation()}`, "utf8");
+  }
 
   process.stdout.write(`Evidence package: ${outDir}\n`);
   if (gaps.length > 0) annotation("warning", `${gaps.length} evidence gap(s) found. This is not a legal compliance result.`);

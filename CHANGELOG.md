@@ -2,6 +2,11 @@
 
 All notable changes to this action are documented here.
 
+## Unreleased
+
+- Add a copy-ready, immutable-SHA-pinned Trivy workflow plus a five-minute guide and representative synthetic output.
+- Add an optional activation-confirmation link to the GitHub workflow summary without telemetry or automatic submission; public reports remain candidate records until human verification and deduplication.
+
 ## 0.1.0 — release candidate
 
 - Create version-specific Markdown and JSON evidence indexes.

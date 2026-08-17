@@ -46,6 +46,7 @@ test("package, schema, and generator versions agree", async () => {
 
 test("foreign actions are pinned to full SHAs", async () => {
   const files = [
+    "README.md",
     ".github/workflows/ci.yml",
     "examples/release-evidence.yml",
     "examples/trivy-release-evidence.yml",
@@ -59,10 +60,16 @@ test("foreign actions are pinned to full SHAs", async () => {
 });
 
 test("Trivy integration remains copy-ready and preserves the product boundary", async () => {
-  const [workflow, guide] = await Promise.all([
+  const [workflow, guide, quickstart, exampleOutput, readme] = await Promise.all([
     text("examples/trivy-release-evidence.yml"),
     text("docs/TRIVY-RELEASE-EVIDENCE.md"),
+    text("docs/QUICKSTART.md"),
+    text("docs/EXAMPLE-OUTPUT.md"),
+    text("README.md"),
   ]);
+  const embeddedWorkflow = readme.match(/## Install with Trivy in five minutes[\s\S]*?```yaml\s+([\s\S]*?)```/);
+  assert.ok(embeddedWorkflow, "README must contain the copy-ready Trivy workflow");
+  assert.equal(embeddedWorkflow[1].trim(), workflow.trim(), "README workflow must match the maintained example");
   assert.match(workflow, /aquasecurity\/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25/);
   assert.match(workflow, /format: cyclonedx/);
   assert.match(workflow, /format: sarif/);
@@ -71,6 +78,10 @@ test("Trivy integration remains copy-ready and preserves the product boundary", 
   assert.match(guide, /not a CRA assessment/i);
   assert.match(guide, /after-publication archive/i);
   assert.match(guide, /voluntarily report an activation/i);
+  assert.match(quickstart, /not a CRA scanner/i);
+  assert.match(quickstart, /prompt never submits anything automatically/i);
+  assert.match(exampleOutput, /synthetic/i);
+  assert.match(exampleOutput, /does not mean findings were acceptable/i);
 });
 
 test("export excludes the website and preserves the safety boundary", async () => {
@@ -92,10 +103,12 @@ test("export excludes the website and preserves the safety boundary", async () =
 });
 
 test("activation reporting is voluntary, minimal, and never counts automatically", async () => {
-  const [form, privacy, pilot] = await Promise.all([
+  const [form, privacy, pilot, activationGuide, source] = await Promise.all([
     text(".github/ISSUE_TEMPLATE/activation-report.yml"),
     text("PRIVACY.md"),
     text("docs/PILOT.md"),
+    text("docs/ACTIVATION.md"),
+    text("action/index.mjs"),
   ]);
 
   assert.match(form, /labels:\s*\n\s+- activation-candidate/);
@@ -107,6 +120,12 @@ test("activation reporting is voluntary, minimal, and never counts automatically
   assert.doesNotMatch(form, /id:\s*(?:email|phone|company_name)\b/i);
   assert.match(privacy, /creates a candidate record only/i);
   assert.match(pilot, /does not count automatically/i);
+  assert.match(activationGuide, /no activation telemetry/i);
+  assert.match(activationGuide, /random opaque activation key/i);
+  assert.match(activationGuide, /must not contain/i);
+  assert.match(source, /Optional activation confirmation/);
+  assert.match(source, /never uploads evidence to the publisher/i);
+  assert.doesNotMatch(source, /\bfetch\s*\(|\b(?:http|https)\.(?:get|request)\s*\(|\bXMLHttpRequest\b|\baxios\b/);
 });
 
 test("Marketplace release handoff is copy-ready and keeps owner decisions manual", async () => {

@@ -35,7 +35,7 @@ This release is an evidence collector, not a CRA scanner, legal advice, a confor
 
 ## Start and verify
 
-- [Quick start](https://github.com/mastermuetze/cra-release-evidence#quick-start)
+- [Quick start for v0.1.0](https://github.com/mastermuetze/cra-release-evidence/blob/v0.1.0/README.md#quick-start)
 - [Verified public demo](https://github.com/mastermuetze/cra-release-evidence-demo/releases/tag/v0.1.2)
 - [Security policy](https://github.com/mastermuetze/cra-release-evidence/security/policy)
 - [Support policy](https://github.com/mastermuetze/cra-release-evidence/blob/v0.1.0/SUPPORT.md)

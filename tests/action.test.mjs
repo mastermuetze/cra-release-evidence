@@ -177,6 +177,7 @@ test("builds a complete versioned evidence package from local release inputs", a
   const markdown = await readFile(path.join(packageDir, "EVIDENCE.md"), "utf8");
   const manifest = await readFile(path.join(packageDir, "MANIFEST.sha256"), "utf8");
   const outputs = await readFile(outputFile, "utf8");
+  const summary = await readFile(summaryFile, "utf8");
 
   assert.equal(report.release.tag, "v1.1.0");
   assert.equal(report.changes.previousTag, "v1.0.0");
@@ -192,8 +193,16 @@ test("builds a complete versioned evidence package from local release inputs", a
   assert.equal(report.status, "complete");
   assert.equal(report.gaps.length, 0);
   assert.match(markdown, /not a conformity assessment/i);
+  assert.doesNotMatch(markdown, /Optional activation confirmation/);
   assert.match(manifest, /evidence\.json/);
   assert.match(outputs, /package-dir<</);
+  assert.match(summary, /Optional activation confirmation/);
+  assert.match(summary, /blob\/main\/docs\/ACTIVATION\.md/);
+  assert.match(summary, /issues\/new\?template=activation-report\.yml/);
+  assert.match(summary, /sends no activation telemetry/i);
+  assert.match(summary, /creates a public candidate only/i);
+  assert.match(summary, /public GitHub account, profile, answers, and issue metadata are visible/i);
+  assert.match(summary, /Do not attach or paste SBOMs, findings, source code, raw reports/i);
   assertMatchesProjectSchema(evidenceSchema, report);
 });
 

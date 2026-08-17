@@ -17,22 +17,23 @@ It is **not** a general CRA scanner, legal advice, a conformity assessment, or a
 - writes `EVIDENCE.md`, `evidence.json`, `changes.json`, `MANIFEST.sha256`, and an SBOM;
 - runs without a vendor backend, runtime downloads, or action telemetry.
 
-## Quick start
+## Install with Trivy in five minutes
 
-The reports must already exist in the current job workspace. The collector itself needs only `contents: read`.
+Create `.github/workflows/trivy-release-evidence.yml` in your repository and copy the complete workflow below. It uses only `contents: read`, keeps the raw SARIF security report out of the package while retaining the imported SBOM, and pins every third-party action to an immutable full commit SHA.
 
 ```yaml
-name: Release evidence
+name: Trivy release evidence
 
 on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+
 jobs:
   evidence:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Check out the released revision
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,31 +42,60 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Build the release evidence index
+      - name: Prepare local report directory
+        run: mkdir -p reports
+
+      - name: Generate CycloneDX SBOM with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: cyclonedx
+          output: reports/bom.cdx.json
+          exit-code: "0"
+
+      - name: Generate SARIF security report with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: reports/trivy.sarif
+          exit-code: "0"
+          skip-setup-trivy: true
+
+      - name: Record the checked-out release commit
+        id: release
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build the versioned evidence package
         id: evidence
-        uses: mastermuetze/cra-release-evidence@v0.1.0
+        uses: mastermuetze/cra-release-evidence@62c7f6d5a635390cfa8f6b3c2364c240e3bb647c # v0.1.0
         with:
           release-tag: ${{ github.event.release.tag_name }}
-          evidence-paths: |
-            reports/**/*.sarif
-            reports/**/junit*.xml
-            reports/**/trivy*.json
-            reports/**/snyk*.json
+          sbom-path: reports/bom.cdx.json
+          sbom-source-sha: ${{ steps.release.outputs.sha }}
+          evidence-paths: reports/trivy.sarif
+          evidence-source-sha: ${{ steps.release.outputs.sha }}
+          required-evidence: sbom,security-scan,change-summary
           include-raw-reports: false
           fail-on-gaps: false
 
-      - name: Retain the versioned package
+      - name: Retain the evidence package
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: cra-evidence-${{ github.run_id }}
+          name: cra-evidence-${{ github.event.release.tag_name }}
           path: ${{ steps.evidence.outputs.package-dir }}
           if-no-files-found: error
           retention-days: 90
 ```
 
-The release tag is convenient for evaluation. For production, resolve `v0.1.0` to its reviewed 40-character commit SHA and pin that immutable SHA in the consuming workflow.
+Then commit the workflow and publish a normal GitHub release. Open the completed **Trivy release evidence** run and download `cra-evidence-<tag>`. The archive contains the version-specific Markdown and JSON index, change summary, digest manifest, and imported SBOM.
 
-Already using Trivy? Start with the copy-ready [Trivy + CycloneDX + SARIF workflow](examples/trivy-release-evidence.yml) and the [step-by-step integration guide](docs/TRIVY-RELEASE-EVIDENCE.md).
+See the [five-minute walkthrough](docs/QUICKSTART.md), the maintained [copy-ready workflow file](examples/trivy-release-evidence.yml), and [what the output looks like](docs/EXAMPLE-OUTPUT.md). If you already produce reports in another workflow, use the [existing-report integration guide](docs/TRIVY-RELEASE-EVIDENCE.md#add-your-test-results).
+
+The pinned Action SHA above is the reviewed v0.1.0 revision. Review and deliberately update immutable pins when adopting later releases; do not replace them with a mutable branch reference in production.
 
 ## Inputs
 
@@ -120,7 +150,7 @@ This proves the public consumer workflow for the source-only prototype. It is pr
 
 The project is validating the free collector before building any paid platform. A real activation means one external repository produced a package for an actual product release. Stars, clicks, forks, demo tags, and copied workflow files do not count.
 
-The optional [Activation report](https://github.com/mastermuetze/cra-release-evidence/issues/new?template=activation-report.yml) creates a public candidate only. It counts only after human verification and deduplication. Never attach private SBOMs, findings, source code, internal paths, credentials, raw evidence, or additional personal data to a public issue. Public GitHub account, profile, and issue metadata remain visible. The separate commercial pilot form remains disabled. See [docs/PILOT.md](docs/PILOT.md).
+The optional [Activation report](https://github.com/mastermuetze/cra-release-evidence/issues/new?template=activation-report.yml) creates a public candidate only. It counts only after human verification and deduplication. Never attach private SBOMs, findings, source code, internal paths, credentials, raw evidence, or additional personal data to a public issue. Public GitHub account, profile, and issue metadata remain visible. Read the [activation privacy boundary](docs/ACTIVATION.md) before reporting a private-repository run. The separate commercial pilot form remains disabled. See [docs/PILOT.md](docs/PILOT.md).
 
 ## Security, support, and licensing
 
